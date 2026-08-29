@@ -76,3 +76,8 @@ project, falling back to `teslamate`.
 ## License
 
 [MIT](LICENSE)
+
+## Disclaimer
+
+This project is an unofficial community tool and is not affiliated with, endorsed by, or
+supported by the official TeslaMate project.
