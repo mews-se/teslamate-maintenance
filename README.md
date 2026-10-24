@@ -25,7 +25,7 @@ TeslaMate maintenance - /home/user/teslamate
 - Every dump is verified (pg_dump start and end markers) before it is trusted,
   both when created and before a restore.
 - Restore, vehicle removal and PostgreSQL upgrades take a verified backup of the
-  current database first, automatically.
+  current database first, automatically. Deleting a drive or charge offers one.
 - Destructive actions require a typed confirmation: `RESTORE`, `DELETE <id>`,
   the car's VIN, or `UPGRADE`.
 - Free disk space is checked against the database size before every backup.
@@ -51,7 +51,7 @@ chmod +x ~/teslamate-maintenance.sh
 ```
 
 Backups are written to `~/teslamate-backups` as `teslamate-YYYYMMDD-HHMMSS.bck`.
-Copy them off the host - a backup on the same machine does not survive a host
+Copy them off the host: a backup on the same machine does not survive a host
 failure.
 
 ## Configuration
@@ -72,6 +72,15 @@ project, falling back to `teslamate`.
 - Docker Compose v2 (`docker compose`, not `docker-compose`)
 - A compose file with a `teslamate` service and a `database` (or `db`) service
 - Run as a user that can talk to the Docker daemon
+- `flock`, `numfmt` and GNU `df`; `curl` is optional and only used for the web
+  UI check
+
+The PostgreSQL upgrade finds the database volume as `<project>_<volume>`, the
+project being `COMPOSE_PROJECT_NAME` or the lowercased directory name, so with
+a top-level `name:` in the compose file, set `COMPOSE_PROJECT_NAME` to the same
+value. Moving to postgres 18 also needs the volume mounted at
+`/var/lib/postgresql` instead of `/var/lib/postgresql/data`; the script warns
+about it but does not edit the compose file.
 
 ## License
 
